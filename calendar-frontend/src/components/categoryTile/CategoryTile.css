@@ -1,0 +1,17 @@
+.category-tile {
+  padding: 10px 15px;
+  border: 1px solid #fff;
+  width: 200px;
+  height: 200px;
+}
+
+.category-tile:hover {
+  transform: scale(1.05);
+}
+
+.category-tile p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
