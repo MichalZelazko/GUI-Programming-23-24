@@ -3,7 +3,7 @@ import { CategoryTileProps } from "../components/categoryTile/CategoryTile";
 
 const useFetch = (url: string) => {
   const [data, setData] = useState<CategoryTileProps[]>([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState(true);
 
   // Similar to componentDidMount and componentDidUpdate:
@@ -17,8 +17,11 @@ const useFetch = (url: string) => {
         setData(data.data as CategoryTileProps[]);
         setLoading(false);
         setError(null);
-      } catch (error: any) {
-        setError(error);
+      } catch (error) {
+        let message;
+        if (error instanceof Error) message = error.message;
+        else message = String(error);
+        setError(message);
         setLoading(false);
       }
     };
