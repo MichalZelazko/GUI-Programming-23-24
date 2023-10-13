@@ -407,12 +407,13 @@ export interface ApiEventEvent extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    date: Attribute.DateTime;
+    startDate: Attribute.DateTime;
     category: Attribute.Relation<
       'api::event.event',
       'oneToOne',
       'api::category.category'
     >;
+    endDate: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

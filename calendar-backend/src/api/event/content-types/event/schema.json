@@ -15,13 +15,16 @@
     "title": {
       "type": "string"
     },
-    "date": {
+    "startDate": {
       "type": "datetime"
     },
     "category": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
+    },
+    "endDate": {
+      "type": "datetime"
     }
   }
 }

@@ -1,6 +1,37 @@
+:root {
+  --fc-border-color: black;
+  --fc-daygrid-event-dot-width: 5px;
+}
+
+.main-container {
+  font-family: "Segoe UI", sans-serif;
+}
+
 .category-tile-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+}
+.calendar-container {
+  width: 80%;
+  margin: auto;
+}
+
+.fc .fc-toolbar-chunk {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.fc .fc-daygrid-day-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.fc .fc-timegrid-slot-label-cushion,
+.fc .fc-timegrid-axis-cushion {
+  text-transform: uppercase;
 }
