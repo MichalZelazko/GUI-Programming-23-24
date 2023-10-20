@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { CategoryTileProps } from "../components/categoryTile/CategoryTile";
 
 const useFetchCategories = (url: string) => {
-  const [data, setData] = useState<CategoryTileProps[]>([]);
+  const [data, setData] = useState<null | CategoryTileProps[]>(null);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState(true);
 

@@ -1,4 +1,5 @@
 import useFetchCategories from "./hooks/useFetchCategories";
+import Header from "./components/header/Header";
 // import {
 //   CategoryTile,
 //   CategoryTileAttributes,
@@ -16,19 +17,12 @@ function App() {
 
   return (
     <>
-      {/* <h1>Calendar GUI</h1> */}
-      <div className="main-container">
-        <div className="calendar-container">
-          {loading && <div>Loading...</div>}
-          {error && <div>Error...</div>}
-          {data && (
-            // data.map(({ id, attributes }) => (
-            //   <CategoryTile
-            //     key={id}
-            //     id={id}
-            //     attributes={attributes as CategoryTileAttributes}
-            //   />
-            // ))}
+      <Header title="Calendar" />
+      <div className="container mx-auto">
+        {loading && <div className="loading">Loading...</div>}
+        {error && <div className="error">Error...</div>}
+        {data && (
+          <>
             <FullCalendar
               initialView="dayGridMonth"
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -48,8 +42,8 @@ function App() {
               fixedWeekCount={false}
               firstDay={1}
             />
-          )}
-        </div>
+          </>
+        )}
       </div>
     </>
   );
