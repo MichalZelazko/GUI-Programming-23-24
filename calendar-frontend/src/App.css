@@ -1,6 +1,14 @@
 :root {
-  --fc-border-color: black;
+  --fc-border-color: rgb(128, 128, 128);
   --fc-daygrid-event-dot-width: 5px;
+  --fc-button-border-color: #000;
+  --fc-button-bg-color: #2ab5f5;
+  --fc-button-text-color: white;
+  --fc-button-hover-bg-color: #29a9e4;
+  --fc-button-hover-text-color: white;
+  --fc-button-active-bg-color: #0070a3;
+  --fc-button-active-text-color: white;
+  --fc-today-bg-color: #29a9e434;
 }
 
 *,
@@ -34,6 +42,10 @@ body {
   gap: 0.5rem;
 }
 
+.fc-button {
+  text-transform: uppercase !important;
+}
+
 .fc .fc-daygrid-day-number {
   font-size: 1.5rem;
   font-weight: bold;
@@ -42,4 +54,12 @@ body {
 .fc .fc-timegrid-slot-label-cushion,
 .fc .fc-timegrid-axis-cushion {
   text-transform: uppercase;
+}
+
+.fc .fc-col-header-cell-cushion {
+  font-size: 1.25rem;
+}
+
+.fc .fc-timegrid-slot-minor {
+  border-top: 1px solid var(--fc-border-color);
 }
