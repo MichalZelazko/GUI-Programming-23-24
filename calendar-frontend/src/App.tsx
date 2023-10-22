@@ -17,7 +17,7 @@ function App() {
 
   return (
     <>
-      <div className="h-screen flex flex-row font-mono">
+      <div className="h-screen flex flex-row font-sans">
         <div className="basis-1/6 bg-gray-100 border-r border-b border-gray-200">
           <Header title="Calendar" />
           <div className="w-full p-3">
@@ -32,7 +32,7 @@ function App() {
             </ul>
           </div>
         </div>
-        <div className="basis-5/6 font-mono py-5 px-10 h-full">
+        <div className="basis-5/6 font-sans py-5 px-10 h-full">
           {loading && <div className="loading">Loading...</div>}
           {error && <div className="error">Error...</div>}
           {data && (

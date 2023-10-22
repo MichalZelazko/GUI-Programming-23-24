@@ -41,7 +41,7 @@ export const CategoryTile = ({ id, attributes }: CategoryTileProps) => {
           color: pickTextColorBasedOnBgColorAdvanced(
             attributes.color,
             "#fff",
-            "#000"
+            "#fff"
           ),
         }}
       >
