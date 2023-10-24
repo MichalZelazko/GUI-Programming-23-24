@@ -2,33 +2,35 @@ import { useState, useEffect } from "react";
 import { CategoryTileProps } from "../components/categoryTile/CategoryTile";
 
 const useFetchCategories = (url: string) => {
-  const [data, setData] = useState<null | CategoryTileProps[]>(null);
-  const [error, setError] = useState<null | string>(null);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<null | CategoryTileProps[]>(
+    null
+  );
+  const [categoryError, setCategoryError] = useState<null | string>(null);
+  const [categoryLoading, setCategoryLoading] = useState(true);
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     // Update the document title using the browser API
     const fetchData = async () => {
-      setLoading(true);
+      setCategoryLoading(true);
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setData(data.data as CategoryTileProps[]);
-        setLoading(false);
-        setError(null);
+        setCategories(data.data as CategoryTileProps[]);
+        setCategoryLoading(false);
+        setCategoryError(null);
       } catch (error) {
         let message;
         if (error instanceof Error) message = error.message;
         else message = String(error);
-        setError(message);
-        setLoading(false);
+        setCategoryError(message);
+        setCategoryLoading(false);
       }
     };
     fetchData();
   }, [url]);
 
-  return { data, loading, error };
+  return { categories, categoryLoading, categoryError };
 };
 
 export default useFetchCategories;

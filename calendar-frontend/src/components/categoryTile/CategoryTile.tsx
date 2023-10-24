@@ -35,7 +35,7 @@ export const CategoryTile = ({ id, attributes }: CategoryTileProps) => {
     <>
       <div
         id={id}
-        className="w-full p-3 my-2 rounded-md cursor-pointer"
+        className="w-full p-3 mt-1 rounded-md cursor-pointer"
         style={{
           backgroundColor: attributes.color,
           color: pickTextColorBasedOnBgColorAdvanced(

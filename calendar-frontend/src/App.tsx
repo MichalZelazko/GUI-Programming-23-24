@@ -1,4 +1,6 @@
 import useFetchCategories from "./hooks/useFetchCategories";
+import useFetchEvents from "./hooks/useFetchEvents";
+import { EventProps } from "./hooks/useFetchEvents";
 import Header from "./components/header/Header";
 import {
   CategoryTile,
@@ -11,8 +13,12 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
 function App() {
-  const { data, loading, error } = useFetchCategories(
+  const { categories, categoryLoading, categoryError } = useFetchCategories(
     "http://localhost:1337/api/categories"
+  );
+
+  const { events, eventLoading, eventError } = useFetchEvents(
+    "http://localhost:1337/api/events"
   );
 
   return (
@@ -22,20 +28,32 @@ function App() {
           <Header title="Calendar" />
           <div className="w-full p-3">
             <h2 className="text-xl font-bold">Categories</h2>
-            <ul className="mt-2">
-              {data &&
-                data.map((category: CategoryTileProps) => (
+            <ul className="mt-2 grid grid-cols-2 gap-1 text-center">
+              {categories &&
+                categories.map((category: CategoryTileProps) => (
                   <li key={category.id}>
                     <CategoryTile {...category} />
+                  </li>
+                ))}
+              {events &&
+                events.map((event: EventProps) => (
+                  <li key={event.id}>
+                    <p>{event.attributes.title}</p>
+                    {/* <p>{event.attributes.start.toLocaleDateString()}</p>
+                    <p>{event.attributes.end.toLocaleDateString()}</p> */}
                   </li>
                 ))}
             </ul>
           </div>
         </div>
-        <div className="basis-5/6 font-sans py-5 px-10 h-full">
-          {loading && <div className="loading">Loading...</div>}
-          {error && <div className="error">Error...</div>}
-          {data && (
+        <div className="basis-5/6 font-mono py-5 px-10 h-full">
+          {(categoryLoading || eventLoading) && (
+            <div className="loading">Loading...</div>
+          )}
+          {(categoryError || eventError) && (
+            <div className="error">Error...</div>
+          )}
+          {(categories || events) && (
             <>
               <FullCalendar
                 initialView="dayGridMonth"
@@ -45,6 +63,7 @@ function App() {
                   center: "prev title next",
                   right: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
+                // events={...events}
                 allDaySlot={false}
                 slotLabelFormat={{
                   hour12: false,
