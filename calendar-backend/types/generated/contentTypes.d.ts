@@ -368,6 +368,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     singularName: 'category';
     pluralName: 'categories';
     displayName: 'Category';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -407,13 +408,13 @@ export interface ApiEventEvent extends Schema.CollectionType {
   };
   attributes: {
     title: Attribute.String;
-    startDate: Attribute.DateTime;
+    start: Attribute.DateTime;
     category: Attribute.Relation<
       'api::event.event',
       'oneToOne',
       'api::category.category'
     >;
-    endDate: Attribute.DateTime;
+    end: Attribute.DateTime;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

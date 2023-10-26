@@ -1,6 +1,5 @@
 import useFetchCategories from "./hooks/useFetchCategories";
 import useFetchEvents from "./hooks/useFetchEvents";
-import { EventProps } from "./hooks/useFetchEvents";
 import Header from "./components/header/Header";
 import {
   CategoryTile,
@@ -18,7 +17,7 @@ function App() {
   );
 
   const { events, eventLoading, eventError } = useFetchEvents(
-    "http://localhost:1337/api/events"
+    "http://localhost:1337/api/events?populate=category"
   );
 
   return (
@@ -35,18 +34,10 @@ function App() {
                     <CategoryTile {...category} />
                   </li>
                 ))}
-              {events &&
-                events.map((event: EventProps) => (
-                  <li key={event.id}>
-                    <p>{event.attributes.title}</p>
-                    {/* <p>{event.attributes.start.toLocaleDateString()}</p>
-                    <p>{event.attributes.end.toLocaleDateString()}</p> */}
-                  </li>
-                ))}
             </ul>
           </div>
         </div>
-        <div className="basis-5/6 font-mono py-5 px-10 h-full">
+        <div className="basis-5/6 font-sans py-5 px-10 h-full">
           {(categoryLoading || eventLoading) && (
             <div className="loading">Loading...</div>
           )}
@@ -63,7 +54,7 @@ function App() {
                   center: "prev title next",
                   right: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
-                // events={...events}
+                events={[{ ...events }]}
                 allDaySlot={false}
                 slotLabelFormat={{
                   hour12: false,

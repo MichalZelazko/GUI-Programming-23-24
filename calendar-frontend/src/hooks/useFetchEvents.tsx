@@ -23,7 +23,6 @@ const useFetchEvents = (url: string) => {
         const response = await fetch(url);
         const data = await response.json();
         setEvents(data.data);
-        console.log(data.data);
         setEventLoading(false);
         setEventError(null);
       } catch (error) {

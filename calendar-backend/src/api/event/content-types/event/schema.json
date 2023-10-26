@@ -15,7 +15,7 @@
     "title": {
       "type": "string"
     },
-    "startDate": {
+    "start": {
       "type": "datetime"
     },
     "category": {
@@ -23,7 +23,7 @@
       "relation": "oneToOne",
       "target": "api::category.category"
     },
-    "endDate": {
+    "end": {
       "type": "datetime"
     }
   }
