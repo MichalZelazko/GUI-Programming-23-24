@@ -1,13 +1,9 @@
 import "./CategoryTile.css";
 
-export type CategoryTileAttributes = {
+export type CategoryProps = {
+  id: string;
   name: string;
   color: string;
-};
-
-export type CategoryTileProps = {
-  id: string;
-  attributes: CategoryTileAttributes;
 };
 
 function pickTextColorBasedOnBgColorAdvanced(
@@ -30,22 +26,22 @@ function pickTextColorBasedOnBgColorAdvanced(
   return L > 0.59 ? darkColor : lightColor;
 }
 
-export const CategoryTile = ({ id, attributes }: CategoryTileProps) => {
+export const CategoryTile = (category: CategoryProps) => {
   return (
     <>
       <div
-        id={id}
+        id={category.id}
         className="w-full p-3 mt-1 rounded-md cursor-pointer"
         style={{
-          backgroundColor: attributes.color,
+          backgroundColor: {category.color},
           color: pickTextColorBasedOnBgColorAdvanced(
-            attributes.color,
+            {category.color},
             "#fff",
             "#000"
           ),
         }}
       >
-        <p>{attributes.name}</p>
+        <p>{category.name}</p>
       </div>
     </>
   );
