@@ -20,6 +20,17 @@ function App() {
     "http://localhost:1337/api/events?populate=category"
   );
 
+  const calendarEvents = events?.map((event) => {
+    return {
+      title: event.title,
+      start: event.start,
+      end: event.end,
+      backgroundColor: event.category.color,
+    };
+  });
+
+  console.log(calendarEvents);
+
   return (
     <>
       <div className="h-screen flex flex-row font-sans">
@@ -35,13 +46,6 @@ function App() {
                   </li>
                 ))}
             </ul>
-            {events &&
-              events.map((event) => (
-                <p key={event.id}>
-                  {event.title}
-                  {event.category.name}
-                </p>
-              ))}
           </div>
         </div>
         <div className="basis-5/6 font-sans py-5 px-10 h-full">
@@ -61,7 +65,7 @@ function App() {
                   center: "prev title next",
                   right: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
-                events={[{ ...events }]}
+                events={calendarEvents}
                 allDaySlot={false}
                 slotLabelFormat={{
                   hour12: false,
@@ -70,9 +74,17 @@ function App() {
                   omitZeroMinute: false,
                   meridiem: false,
                 }}
+                nowIndicator={true}
                 locale={"en-gb"}
                 fixedWeekCount={false}
                 firstDay={1}
+                editable={true}
+                eventResizeStop={(info) => {
+                  console.log(info.event.end);
+                }}
+                eventDrop={(info) => {
+                  console.log(info.event.end);
+                }}
               />
             </>
           )}

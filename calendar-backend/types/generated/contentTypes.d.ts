@@ -375,8 +375,9 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   attributes: {
     color: Attribute.String &
+      Attribute.Required &
       Attribute.CustomField<'plugin::color-picker.color'>;
-    name: Attribute.String;
+    name: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
