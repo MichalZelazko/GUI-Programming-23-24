@@ -33,9 +33,9 @@ export const CategoryTile = (category: CategoryProps) => {
         id={category.id}
         className="w-full p-3 mt-1 rounded-md cursor-pointer"
         style={{
-          backgroundColor: {category.color},
+          backgroundColor: category.color,
           color: pickTextColorBasedOnBgColorAdvanced(
-            {category.color},
+            category.color,
             "#fff",
             "#000"
           ),

@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
+import { CategoryProps } from "../components/categoryTile/CategoryTile";
 
 export type EventProps = {
   id: string;
-  attributes: {
-    title: string;
-    start: Date;
-    end: Date;
-    category: string;
-  };
+  title: string;
+  start: Date;
+  end: Date;
+  category: CategoryProps;
 };
 
 const useFetchEvents = (url: string) => {
@@ -22,6 +21,7 @@ const useFetchEvents = (url: string) => {
       try {
         const response = await fetch(url);
         const data = await response.json();
+        console.log(data.data);
         setEvents(data.data);
         setEventLoading(false);
         setEventError(null);

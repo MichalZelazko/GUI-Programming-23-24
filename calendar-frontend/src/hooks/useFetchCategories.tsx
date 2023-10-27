@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { CategoryTileProps } from "../components/categoryTile/CategoryTile";
+import { CategoryProps } from "../components/categoryTile/CategoryTile";
 
 const useFetchCategories = (url: string) => {
-  const [categories, setCategories] = useState<null | CategoryTileProps[]>(
-    null
-  );
+  const [categories, setCategories] = useState<null | CategoryProps[]>(null);
   const [categoryError, setCategoryError] = useState<null | string>(null);
   const [categoryLoading, setCategoryLoading] = useState(true);
 
@@ -16,7 +14,7 @@ const useFetchCategories = (url: string) => {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setCategories(data.data as CategoryTileProps[]);
+        setCategories(data.data as CategoryProps[]);
         setCategoryLoading(false);
         setCategoryError(null);
       } catch (error) {

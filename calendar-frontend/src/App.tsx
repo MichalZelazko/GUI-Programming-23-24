@@ -3,7 +3,7 @@ import useFetchEvents from "./hooks/useFetchEvents";
 import Header from "./components/header/Header";
 import {
   CategoryTile,
-  CategoryTileProps,
+  CategoryProps,
 } from "./components/categoryTile/CategoryTile";
 import "./App.css";
 import FullCalendar from "@fullcalendar/react";
@@ -29,12 +29,19 @@ function App() {
             <h2 className="text-xl font-bold">Categories</h2>
             <ul className="mt-2 grid grid-cols-2 gap-1 text-center">
               {categories &&
-                categories.map((category: CategoryTileProps) => (
+                categories.map((category: CategoryProps) => (
                   <li key={category.id}>
                     <CategoryTile {...category} />
                   </li>
                 ))}
             </ul>
+            {events &&
+              events.map((event) => (
+                <p key={event.id}>
+                  {event.title}
+                  {event.category.name}
+                </p>
+              ))}
           </div>
         </div>
         <div className="basis-5/6 font-sans py-5 px-10 h-full">
