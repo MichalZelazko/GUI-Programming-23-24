@@ -33,6 +33,7 @@ const useFetchEvents = (url: string) => {
         setEventLoading(false);
       }
     };
+
     fetchData();
   }, [url]);
 

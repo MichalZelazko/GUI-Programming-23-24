@@ -1,5 +1,5 @@
 :root {
-  --fc-border-color: rgb(128, 128, 128);
+  --fc-border-color: rgb(210, 210, 210);
   --fc-daygrid-event-dot-width: 5px;
   --fc-button-border-color: #bebebe;
   --fc-button-bg-color: white;
@@ -8,7 +8,7 @@
   --fc-button-hover-text-color: white;
   --fc-button-active-bg-color: #333333;
   --fc-button-active-text-color: white;
-  --fc-today-bg-color: #bebebe50;
+  --fc-today-bg-color: #ffcaca50;
 }
 
 *,
@@ -61,7 +61,7 @@ body {
 }
 
 .fc .fc-timegrid-slot-minor {
-  border-top: 1px solid var(--fc-border-color);
+  border-top: 1px solid rgb(235, 235, 235);
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active,
@@ -69,4 +69,9 @@ body {
   background-color: var(--fc-button-active-bg-color);
   border-color: var(--fc-button-active-border-color);
   color: var(--fc-button-active-text-color);
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid var(--fc-border-color);
 }

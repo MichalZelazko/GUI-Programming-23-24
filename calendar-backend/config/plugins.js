@@ -7,6 +7,9 @@ module.exports = ({ env }) => ({
         removeAttributesKey: true,
         removeDataKey: true,
       },
+      requestTransforms: {
+        wrapBodyWithDataKey: true,
+      },
     },
   },
   // ..
