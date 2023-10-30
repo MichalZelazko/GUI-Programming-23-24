@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { CategoryProps } from "../categoryTile/CategoryTile";
@@ -11,7 +12,7 @@ const AddEventForm = ({
 }: {
   categories: CategoryProps[] | null;
   events: CalendarEventProps[] | null;
-  setEvents: React.Dispatch<React.SetStateAction<CalendarEventProps[] | null>>;
+  setEvents: Dispatch<SetStateAction<CalendarEventProps[] | null>>;
 }) => {
   type FormValues = {
     title: string;
@@ -27,7 +28,7 @@ const AddEventForm = ({
     reset,
   } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    let newId;
     try {
       fetch("http://localhost:1337/api/events", {
         method: "POST",
@@ -42,25 +43,24 @@ const AddEventForm = ({
             connect: [data.category],
           },
         }),
-      });
+      })
+        .then((response) => response.json())
+        .then((data) => (newId = data.id.toString()));
       toast.success("Event added!", {
         position: "bottom-center",
       });
       reset();
-      const bgColor =
-        categories?.find((category) => category.id.toString() === data.category)
-          ?.color ?? "#000";
-      console.log(bgColor);
       setEvents([
         ...(events ?? []),
         {
-          id: events?.length
-            ? String(Number(events[events.length - 1].id) + 1)
-            : "1",
+          id: newId ?? (events ? (events.length + 1).toString() : "1"),
           title: data.title,
           start: data.start,
           end: data.end,
-          backgroundColor: bgColor,
+          backgroundColor:
+            categories?.find(
+              (category) => category.id.toString() === data.category
+            )?.color ?? "#000",
         },
       ]);
     } catch (error) {

@@ -1,6 +1,6 @@
 export type EventUpdateProps = {
   id: string;
-  start: Date;
+  start?: Date;
   end: Date;
 };
 

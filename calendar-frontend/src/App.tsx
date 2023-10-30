@@ -49,110 +49,122 @@ function App() {
     }
   }, [events]);
 
-  return (
-    <>
-      <div>
-        <Toaster />
-      </div>
-      <div className="h-screen flex flex-row font-sans">
-        <div className="basis-1/6 bg-gray-100 border-r border-b border-gray-200">
-          <Header title="Calendar" />
-          <AddEventForm
-            categories={categories}
-            events={calendarEvents}
-            setEvents={setCalendarEvents}
-          />
-          <div className="w-full p-3">
-            <h2 className="text-xl font-bold">Categories</h2>
-            <ul className="mt-2 flex flex-col gap-1 text-center">
-              {categories &&
-                categories.map((category: CategoryProps) => (
-                  <li key={category.id}>
-                    <CategoryTile {...category} />
-                  </li>
-                ))}
-            </ul>
+  if (categoryLoading || eventLoading) {
+    return (
+      <>
+        <div className="w-screen h-screen text-3xl flex items-center justify-center">
+          Loading...
+        </div>
+      </>
+    );
+  } else if (categoryError || eventError) {
+    return (
+      <>
+        <div className="w-screen h-screen text-3xl flex items-center justify-center">
+          Error...
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div>
+          <Toaster />
+        </div>
+        <div className="h-screen flex flex-row font-sans">
+          <div className="basis-1/6 bg-gray-100 border-r border-b border-gray-200">
+            <Header title="Calendar" />
+            <AddEventForm
+              categories={categories}
+              events={calendarEvents}
+              setEvents={setCalendarEvents}
+            />
+            <div className="w-full p-3">
+              <h2 className="text-xl font-bold">Categories</h2>
+              <ul className="mt-2 flex flex-col gap-1 text-center">
+                {categories &&
+                  categories.map((category: CategoryProps) => (
+                    <li key={category.id}>
+                      <CategoryTile {...category} />
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+          <div className="basis-5/6 font-sans py-5 px-10 h-full">
+            {(categories || events) && (
+              <>
+                <FullCalendar
+                  initialView="timeGridWeek"
+                  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                  headerToolbar={{
+                    left: "today",
+                    center: "prev title next",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay",
+                  }}
+                  events={calendarEvents ? calendarEvents : []}
+                  allDaySlot={false}
+                  slotLabelFormat={{
+                    hour12: false,
+                    hour: "numeric",
+                    minute: "2-digit",
+                    omitZeroMinute: false,
+                    meridiem: false,
+                  }}
+                  slotDuration={"00:15:00"}
+                  nowIndicator={true}
+                  locale={"en-gb"}
+                  fixedWeekCount={false}
+                  firstDay={1}
+                  editable={true}
+                  eventResize={(info) => {
+                    try {
+                      updateEvent(
+                        `http://localhost:1337/api/events/${info.event.id}`,
+                        {
+                          id: info.event.id,
+                          end: info.event.end,
+                        } as EventUpdateProps
+                      );
+
+                      toast.success("Event updated!", {
+                        position: "bottom-center",
+                      });
+                    } catch (error) {
+                      toast.error("Event update failed!", {
+                        position: "bottom-center",
+                      });
+                    }
+                  }}
+                  eventDrop={(info) => {
+                    try {
+                      updateEvent(
+                        `http://localhost:1337/api/events/${info.event.id}`,
+                        {
+                          id: info.event.id,
+                          start: info.event.start,
+                          end: info.event.end,
+                        } as EventUpdateProps
+                      );
+
+                      toast.success("Event updated!", {
+                        position: "bottom-center",
+                      });
+                    } catch (error) {
+                      toast.error("Event update failed!", {
+                        position: "bottom-center",
+                      });
+                    }
+                  }}
+                  eventOverlap={true}
+                />
+              </>
+            )}
           </div>
         </div>
-        <div className="basis-5/6 font-sans py-5 px-10 h-full">
-          {(categoryLoading || eventLoading) && (
-            <div className="loading">Loading...</div>
-          )}
-          {(categoryError || eventError) && (
-            <div className="error">Error...</div>
-          )}
-          {(categories || events) && (
-            <>
-              <FullCalendar
-                initialView="dayGridMonth"
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                headerToolbar={{
-                  left: "today",
-                  center: "prev title next",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay",
-                }}
-                events={calendarEvents ? calendarEvents : []}
-                allDaySlot={false}
-                slotLabelFormat={{
-                  hour12: false,
-                  hour: "numeric",
-                  minute: "2-digit",
-                  omitZeroMinute: false,
-                  meridiem: false,
-                }}
-                slotDuration={"00:15:00"}
-                nowIndicator={true}
-                locale={"en-gb"}
-                fixedWeekCount={false}
-                firstDay={1}
-                editable={true}
-                eventResize={(info) => {
-                  try {
-                    updateEvent(
-                      `http://localhost:1337/api/events/${info.event.id}`,
-                      {
-                        id: info.event.id,
-                        end: info.event.end,
-                      } as EventUpdateProps
-                    );
-
-                    toast.success("Event updated!", {
-                      position: "bottom-center",
-                    });
-                  } catch (error) {
-                    toast.error("Event update failed!", {
-                      position: "bottom-center",
-                    });
-                  }
-                }}
-                eventDrop={(info) => {
-                  try {
-                    updateEvent(
-                      `http://localhost:1337/api/events/${info.event.id}`,
-                      {
-                        id: info.event.id,
-                        start: info.event.start,
-                        end: info.event.end,
-                      } as EventUpdateProps
-                    );
-
-                    toast.success("Event updated!", {
-                      position: "bottom-center",
-                    });
-                  } catch (error) {
-                    toast.error("Event update failed!", {
-                      position: "bottom-center",
-                    });
-                  }
-                }}
-                eventOverlap={true}
-              />
-            </>
-          )}
-        </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default App;
