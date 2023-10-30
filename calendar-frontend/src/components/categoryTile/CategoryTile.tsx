@@ -31,7 +31,7 @@ export const CategoryTile = (category: CategoryProps) => {
     <>
       <div
         id={category.id}
-        className="w-full p-3 mt-1 rounded-md cursor-pointer border border-black"
+        className="w-full p-3 mt-1 rounded-md border border-black"
         style={{
           backgroundColor: category.color,
           color: pickTextColorBasedOnBgColorAdvanced(

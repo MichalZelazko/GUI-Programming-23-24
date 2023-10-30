@@ -12,6 +12,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import toast, { Toaster } from "react-hot-toast";
+import AddEventForm from "./components/addEventForm/addEventForm";
 
 function App() {
   const { categories, categoryLoading, categoryError } = useFetchCategories(
@@ -50,49 +51,7 @@ function App() {
                   </li>
                 ))}
             </ul>
-            <h2 className="text-xl font-bold mt-7">Add an event</h2>
-            <form>
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                className="w-full p-1 border border-gray-200 rounded-md"
-              />
-              <label htmlFor="start">Start</label>
-              <input
-                type="datetime-local"
-                name="start"
-                id="start"
-                className="w-full p-1 border border-gray-200 rounded-md"
-              />
-              <label htmlFor="end">End</label>
-              <input
-                type="datetime-local"
-                name="end"
-                id="end"
-                className="w-full p-1 border border-gray-200 rounded-md"
-              />
-              <label htmlFor="category">Category</label>
-              <select
-                name="category"
-                id="category"
-                className="w-full p-1 border border-gray-200 rounded-md"
-              >
-                {categories &&
-                  categories.map((category: CategoryProps) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-              </select>
-              <button
-                type="submit"
-                className="w-full p-3 mt-2 bg-gray-800 text-white rounded-md border border-black"
-              >
-                Add event
-              </button>
-            </form>
+            <AddEventForm categories={categories} />
           </div>
         </div>
         <div className="basis-5/6 font-sans py-5 px-10 h-full">
@@ -136,6 +95,7 @@ function App() {
                         end: info.event.end,
                       } as EventUpdateProps
                     );
+
                     toast.success("Event updated!", {
                       position: "bottom-center",
                     });
@@ -156,6 +116,7 @@ function App() {
                         end: info.event.end,
                       } as EventUpdateProps
                     );
+
                     toast.success("Event updated!", {
                       position: "bottom-center",
                     });
