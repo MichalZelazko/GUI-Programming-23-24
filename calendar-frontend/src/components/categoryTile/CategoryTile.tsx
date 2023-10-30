@@ -29,19 +29,20 @@ function pickTextColorBasedOnBgColorAdvanced(
 export const CategoryTile = (category: CategoryProps) => {
   return (
     <>
-      <div
-        id={category.id}
-        className="w-full p-3 mt-1 rounded-md border border-black"
-        style={{
-          backgroundColor: category.color,
-          color: pickTextColorBasedOnBgColorAdvanced(
-            category.color,
-            "#fff",
-            "#000"
-          ),
-        }}
-      >
-        <p>{category.name}</p>
+      <div className="flex flex-row justify-start items-center gap-4 border border-black bg-white rounded-md">
+        <div
+          id={category.id}
+          className="h-10 w-10 rounded-md border-r border-black"
+          style={{
+            backgroundColor: category.color,
+            color: pickTextColorBasedOnBgColorAdvanced(
+              category.color,
+              "#fff",
+              "#000"
+            ),
+          }}
+        ></div>
+        <p className="text-lg">{category.name}</p>
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import useFetchCategories from "./hooks/useFetchCategories";
 import useFetchEvents from "./hooks/useFetchEvents";
 import updateEvent, { EventUpdateProps } from "./hooks/updateEvent";
@@ -12,7 +13,15 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import toast, { Toaster } from "react-hot-toast";
-import AddEventForm from "./components/addEventForm/addEventForm";
+import AddEventForm from "./components/addEventForm/AddEventForm";
+
+export type CalendarEventProps = {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+  backgroundColor: string;
+};
 
 function App() {
   const { categories, categoryLoading, categoryError } = useFetchCategories(
@@ -23,15 +32,22 @@ function App() {
     "http://localhost:1337/api/events?populate=category"
   );
 
-  const calendarEvents = events?.map((event) => {
-    return {
-      id: event.id,
-      title: event.title,
-      start: event.start,
-      end: event.end,
-      backgroundColor: event.category.color,
-    };
-  });
+  const [calendarEvents, setCalendarEvents] = useState<
+    CalendarEventProps[] | null
+  >([] as CalendarEventProps[]);
+
+  useEffect(() => {
+    if (events) {
+      const updatedEvents = events.map((event) => ({
+        id: event.id,
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        backgroundColor: event.category.color,
+      }));
+      setCalendarEvents(updatedEvents);
+    }
+  }, [events]);
 
   return (
     <>
@@ -41,9 +57,14 @@ function App() {
       <div className="h-screen flex flex-row font-sans">
         <div className="basis-1/6 bg-gray-100 border-r border-b border-gray-200">
           <Header title="Calendar" />
+          <AddEventForm
+            categories={categories}
+            events={calendarEvents}
+            setEvents={setCalendarEvents}
+          />
           <div className="w-full p-3">
             <h2 className="text-xl font-bold">Categories</h2>
-            <ul className="mt-2 grid grid-cols-2 gap-1 text-center">
+            <ul className="mt-2 flex flex-col gap-1 text-center">
               {categories &&
                 categories.map((category: CategoryProps) => (
                   <li key={category.id}>
@@ -51,7 +72,6 @@ function App() {
                   </li>
                 ))}
             </ul>
-            <AddEventForm categories={categories} />
           </div>
         </div>
         <div className="basis-5/6 font-sans py-5 px-10 h-full">
@@ -71,7 +91,7 @@ function App() {
                   center: "prev title next",
                   right: "dayGridMonth,timeGridWeek,timeGridDay",
                 }}
-                events={calendarEvents}
+                events={calendarEvents ? calendarEvents : []}
                 allDaySlot={false}
                 slotLabelFormat={{
                   hour12: false,
@@ -103,10 +123,9 @@ function App() {
                     toast.error("Event update failed!", {
                       position: "bottom-center",
                     });
-                  } // finally with update events
+                  }
                 }}
                 eventDrop={(info) => {
-                  // PUT to /api/events/:id
                   try {
                     updateEvent(
                       `http://localhost:1337/api/events/${info.event.id}`,
