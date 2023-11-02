@@ -11,9 +11,12 @@ import "./App.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, {
+  EventResizeDoneArg,
+} from "@fullcalendar/interaction";
 import toast, { Toaster } from "react-hot-toast";
 import AddEventForm from "./components/addEventForm/AddEventForm";
+import { EventDropArg } from "@fullcalendar/core/index.js";
 
 export type CalendarEventProps = {
   id: string;
@@ -48,6 +51,25 @@ function App() {
       setCalendarEvents(updatedEvents);
     }
   }, [events]);
+
+  const updateCalendarEvent = async (
+    info: EventResizeDoneArg | EventDropArg
+  ) => {
+    try {
+      updateEvent(`http://localhost:1337/api/events/${info.event.id}`, {
+        id: info.event.id,
+        end: info.event.end,
+      } as EventUpdateProps);
+
+      toast.success("Event updated!", {
+        position: "bottom-center",
+      });
+    } catch (error) {
+      toast.error("Event update failed!", {
+        position: "bottom-center",
+      });
+    }
+  };
 
   if (categoryLoading || eventLoading) {
     return (
@@ -118,43 +140,10 @@ function App() {
                   firstDay={1}
                   editable={true}
                   eventResize={(info) => {
-                    try {
-                      updateEvent(
-                        `http://localhost:1337/api/events/${info.event.id}`,
-                        {
-                          id: info.event.id,
-                          end: info.event.end,
-                        } as EventUpdateProps
-                      );
-
-                      toast.success("Event updated!", {
-                        position: "bottom-center",
-                      });
-                    } catch (error) {
-                      toast.error("Event update failed!", {
-                        position: "bottom-center",
-                      });
-                    }
+                    updateCalendarEvent(info);
                   }}
                   eventDrop={(info) => {
-                    try {
-                      updateEvent(
-                        `http://localhost:1337/api/events/${info.event.id}`,
-                        {
-                          id: info.event.id,
-                          start: info.event.start,
-                          end: info.event.end,
-                        } as EventUpdateProps
-                      );
-
-                      toast.success("Event updated!", {
-                        position: "bottom-center",
-                      });
-                    } catch (error) {
-                      toast.error("Event update failed!", {
-                        position: "bottom-center",
-                      });
-                    }
+                    updateCalendarEvent(info);
                   }}
                   eventOverlap={true}
                 />
