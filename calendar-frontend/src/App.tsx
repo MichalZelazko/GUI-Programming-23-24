@@ -18,7 +18,7 @@ import toast, { Toaster } from "react-hot-toast";
 import AddEventForm from "./components/addEventForm/AddEventForm";
 import { EventClickArg, EventDropArg } from "@fullcalendar/core/index.js";
 import ReactModal from "react-modal";
-import { SubmitHandler, set, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import deleteEvent from "./hooks/deleteEvent";
 
 export type CalendarEventProps = {
