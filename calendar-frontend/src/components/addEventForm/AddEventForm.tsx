@@ -5,15 +5,14 @@ import { CategoryProps } from "../categoryTile/CategoryTile";
 import "./AddEventForm.css";
 import { CalendarEventProps } from "../../App";
 
-const AddEventForm = ({
-  categories,
-  events,
-  setEvents,
-}: {
+type AddEventFormProps = {
   categories: CategoryProps[] | null;
   events: CalendarEventProps[] | null;
   setEvents: Dispatch<SetStateAction<CalendarEventProps[] | null>>;
-}) => {
+  setIsOpen?: Dispatch<SetStateAction<boolean>> | null;
+};
+
+const AddEventForm = (props: AddEventFormProps) => {
   type FormValues = {
     title: string;
     start: Date;
@@ -28,6 +27,8 @@ const AddEventForm = ({
     reset,
   } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) => {
+    if (data.start > data.end)
+      return toast.error("Start date cannot be after end date!");
     let newId;
     try {
       fetch("http://localhost:1337/api/events", {
@@ -49,16 +50,19 @@ const AddEventForm = ({
       toast.success("Event added!", {
         position: "bottom-center",
       });
+      props.setIsOpen && props.setIsOpen(false);
       reset();
-      setEvents([
-        ...(events ?? []),
+      props.setEvents([
+        ...(props.events ?? []),
         {
-          id: newId ?? (events ? (events.length + 1).toString() : "1"),
+          id:
+            newId ??
+            (props.events ? (props.events.length + 1).toString() : "1"),
           title: data.title,
           start: data.start,
           end: data.end,
           backgroundColor:
-            categories?.find(
+            props.categories?.find(
               (category) => category.id.toString() === data.category
             )?.color ?? "#000",
         },
@@ -99,8 +103,8 @@ const AddEventForm = ({
             {errors?.end && <span>This field is required</span>}
             <label htmlFor="category">Category</label>
             <select id="category" {...register("category", { required: true })}>
-              {categories &&
-                categories.map((category: CategoryProps) => (
+              {props.categories &&
+                props.categories.map((category: CategoryProps) => (
                   <option key={category.id} value={category.id}>
                     {category.name}
                   </option>

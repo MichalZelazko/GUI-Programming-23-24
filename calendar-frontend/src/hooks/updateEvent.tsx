@@ -1,7 +1,8 @@
 export type EventUpdateProps = {
   id: string;
   start?: Date;
-  end: Date;
+  end?: Date;
+  title?: string;
 };
 
 const updateEvent = async (url: string, eventData: EventUpdateProps) => {
