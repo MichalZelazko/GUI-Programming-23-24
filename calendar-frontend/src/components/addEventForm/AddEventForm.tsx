@@ -26,6 +26,7 @@ const AddEventForm = (props: AddEventFormProps) => {
     formState: { errors },
     reset,
   } = useForm<FormValues>();
+
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     if (data.start > data.end)
       return toast.error("Start date cannot be after end date!");
@@ -115,7 +116,7 @@ const AddEventForm = (props: AddEventFormProps) => {
             </select>
             {errors?.category && <span>This field is required</span>}
             <input
-              className="w-full p-5 text-xl font-semibold uppercase bg-[#5c0000] text-white border border-black rounded-lg hover:bg-black mt-5 transition-all duration-300"
+              className="w-full p-5 text-xl font-semibold uppercase bg-[#8b3c38] text-white border border-black rounded-lg hover:bg-[#5c0000] mt-5 transition-all duration-300"
               type="submit"
               value="Add new event"
             />

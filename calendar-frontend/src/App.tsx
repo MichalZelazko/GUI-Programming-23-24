@@ -62,7 +62,7 @@ function App() {
           "#fff",
           "#000"
         ),
-        borderColor: "#696969",
+        borderColor: "#777",
       }));
       setCalendarEvents(updatedEvents);
     }
@@ -309,14 +309,14 @@ function App() {
                         {errors?.end && <span>This field is required</span>}
                         <button
                           type="submit"
-                          className="mt-3 bg-gray-800 px-4 py-3 text-white font-semibold text-center rounded-md"
+                          className="mt-3 bg-gray-800 px-4 py-3 text-white font-semibold text-center rounded-md border border-black uppercase"
                           onClick={() => setValue("action", "Update")}
                         >
                           Update
                         </button>
                         <button
                           type="submit"
-                          className="mt-2 bg-red-600 px-4 py-3 text-white font-semibold text-center rounded-md"
+                          className="mt-2 bg-red-600 px-4 py-3 text-white font-semibold text-center rounded-md border border-black uppercase"
                           onClick={() => setValue("action", "Delete")}
                         >
                           Delete
