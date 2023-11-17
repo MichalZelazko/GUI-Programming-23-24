@@ -84,6 +84,7 @@ const AddEventForm = (props: AddEventFormProps) => {
             <input
               type="text"
               id="title"
+              placeholder="Event title"
               {...register("title", { required: true })}
             />
             {errors?.title && <span>This field is required</span>}
@@ -91,6 +92,7 @@ const AddEventForm = (props: AddEventFormProps) => {
             <input
               type="datetime-local"
               id="start"
+              placeholder="Event start date"
               {...register("start", { required: true })}
             />
             {errors?.start && <span>This field is required</span>}
@@ -98,6 +100,7 @@ const AddEventForm = (props: AddEventFormProps) => {
             <input
               type="datetime-local"
               id="end"
+              placeholder="Event end date"
               {...register("end", { required: true })}
             />
             {errors?.end && <span>This field is required</span>}
@@ -112,7 +115,7 @@ const AddEventForm = (props: AddEventFormProps) => {
             </select>
             {errors?.category && <span>This field is required</span>}
             <input
-              className="w-full p-5 text-xl font-semibold uppercase bg-[#333333] text-white border border-black rounded-lg hover:bg-[#555555] mt-5 transition-all"
+              className="w-full p-5 text-xl font-semibold uppercase bg-[#5c0000] text-white border border-black rounded-lg hover:bg-black mt-5 transition-all duration-300"
               type="submit"
               value="Add new event"
             />

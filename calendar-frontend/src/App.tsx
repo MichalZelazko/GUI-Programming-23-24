@@ -7,6 +7,7 @@ import {
   CategoryTile,
   CategoryProps,
 } from "./components/categoryTile/CategoryTile";
+import pickTextColorBasedOnBgColorAdvanced from "./commons/PickTextColorBasedOnBgColorAdvanced";
 import "./App.css";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -56,6 +57,12 @@ function App() {
         start: event.start,
         end: event.end,
         backgroundColor: event.category.color,
+        textColor: pickTextColorBasedOnBgColorAdvanced(
+          event.category.color,
+          "#fff",
+          "#000"
+        ),
+        borderColor: "#696969",
       }));
       setCalendarEvents(updatedEvents);
     }
@@ -67,6 +74,7 @@ function App() {
     try {
       updateEvent(`http://localhost:1337/api/events/${info.event.id}`, {
         id: info.event.id,
+        start: info.event.start,
         end: info.event.end,
       } as EventUpdateProps);
 
@@ -114,17 +122,19 @@ function App() {
             : event
         );
         if (updatedEvents) setCalendarEvents(updatedEvents);
+        toast.success("Event updated!", {
+          position: "bottom-center",
+        });
       } else if (data.action === "Delete") {
-        console.log(`http://localhost:1337/api/events/${data.id}`);
         deleteEvent(`http://localhost:1337/api/events/${data.id}`);
         const updatedEvents = calendarEvents?.filter(
           (event) => event.id != data.id
         );
         if (updatedEvents) setCalendarEvents(updatedEvents);
+        toast.success("Event deleted successfully!", {
+          position: "bottom-center",
+        });
       }
-      toast.success("Event updated!", {
-        position: "bottom-center",
-      });
       setIsEditOpen(false);
       reset();
     } catch (error) {
@@ -139,9 +149,9 @@ function App() {
       (event) => event.id == info.event.id
     );
     if (clickedEvent) {
-      let correctStart = new Date(clickedEvent.start);
+      const correctStart = new Date(clickedEvent.start);
       correctStart.setTime(correctStart.getTime() + 60 * 60 * 1000); // Add 1 hour in milliseconds
-      let correctEnd = new Date(clickedEvent.end);
+      const correctEnd = new Date(clickedEvent.end);
       correctEnd.setTime(correctEnd.getTime() + 60 * 60 * 1000); // Add 1 hour in milliseconds
       setSelectedEvent({
         id: clickedEvent.id,
@@ -192,10 +202,10 @@ function App() {
         </div>
         <div className="h-screen flex flex-col md:flex-row font-sans">
           <div className="relative">
-            <Header title="Calendar" header />
+            <Header title="GUI Calendar" header />
             <button
               onClick={toggleAddModal}
-              className="md:hidden absolute top-1 right-2 text-2xl"
+              className="md:hidden absolute text-white top-1 right-4 text-3xl font-semibold"
             >
               +
             </button>
@@ -232,8 +242,8 @@ function App() {
               </div>
             </ReactModal>
           </div>
-          <div className="hidden md:flex flex-col basis-1/6 bg-gray-100 border-r border-b border-gray-200">
-            <Header title="Calendar" />
+          <div className="hidden md:flex flex-col basis-1/6 bg-[#ffdddd52] border-r border-b border-gray-300 shadow-lg">
+            <Header title="GUI Calendar" />
             <AddEventForm
               categories={categories}
               events={calendarEvents}
@@ -250,7 +260,6 @@ function App() {
                   ))}
               </ul>
             </div>
-            b
           </div>
           <div className="md:basis-5/6 font-sans py-2 md:py-5 px-3 md:px-10 h-full w-full">
             {(categories || events) && (
@@ -282,7 +291,6 @@ function App() {
                           type="text"
                           id="edit-title"
                           {...register("title", { required: true })}
-                          value={selectedEvent?.title} // Set default value from selectedEvent
                         />
                         {errors?.title && <span>This field is required</span>}
                         <label htmlFor="edit-start">Start date</label>
@@ -290,10 +298,6 @@ function App() {
                           type="datetime-local"
                           id="edit-start"
                           {...register("start", { required: true })}
-                          value={
-                            selectedEvent?.start.toISOString().slice(0, 16) ||
-                            ""
-                          }
                         />
                         {errors?.start && <span>This field is required</span>}
                         <label htmlFor="edit-end">End date</label>
@@ -301,9 +305,6 @@ function App() {
                           type="datetime-local"
                           id="edit-end"
                           {...register("end", { required: true })}
-                          value={
-                            selectedEvent?.end.toISOString().slice(0, 16) || ""
-                          }
                         />
                         {errors?.end && <span>This field is required</span>}
                         <button
